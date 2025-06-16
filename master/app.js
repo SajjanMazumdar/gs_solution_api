@@ -48,23 +48,11 @@ app.use(function (req, res, next) {
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const areaRouter = require('./routes/area.route');
-const branchRouter = require('./routes/branch.route');
-const lineRouter = require('./routes/line.route');
-const villageRouter = require('./routes/village.route');
 const employeeRouter = require('./routes/employee.route');
-const bankRouter = require('./routes/bank.route');
-const farmerRouter = require('./routes/farmer.route');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/area', areaRouter);
-app.use('/branch', branchRouter);
-app.use('/line', lineRouter);
-app.use('/village', villageRouter);
 app.use('/employee', employeeRouter);
-app.use('/bank', bankRouter);
-app.use('/farmer',farmerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
