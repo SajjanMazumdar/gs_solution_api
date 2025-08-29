@@ -18,17 +18,19 @@ app.use(cors());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
+
+const proxyRouter = require('./routes/proxy_routes');
+app.use('/api', proxyRouter);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const proxyRouter = require('./routes/proxy_routes');
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api', proxyRouter);
 
 
 // catch 404 and forward to error handler
@@ -65,9 +67,9 @@ process.on('uncaughtException', (err) => {
   logger.error('uncaughtException: Something went wrong');
   process.exit(); // Exit the process with failure
 });
-
-app.listen(() => {
-  console.log(`Server running at http://localhost:${process.env.PORT}`);
-});
+app.set('trust proxy', true);
+// app.listen(() => {
+//   console.log(`Server running at http://localhost:${process.env.PORT}`);
+// });
 
 module.exports = app;

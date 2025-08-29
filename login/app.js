@@ -1,4 +1,3 @@
-
 const express = require('express');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
@@ -10,6 +9,7 @@ const createError = require('http-errors');
 const helmet = require('helmet');
 
 require('dotenv').config();
+require('./configs/mysql2.config');
 
 const app = express();
 app.use(compression());
@@ -35,9 +35,11 @@ app.use(function (req, res, next) {
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth.route');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 
 // catch 404 and forward to error handler

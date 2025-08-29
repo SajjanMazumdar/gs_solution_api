@@ -48,11 +48,15 @@ app.use(function (req, res, next) {
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const areaRouter = require('./routes/area.route');
 const employeeRouter = require('./routes/employee.route');
+const bankRouter = require('./routes/bank.route');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/area', areaRouter);
 app.use('/employee', employeeRouter);
+app.use('/bank', bankRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
