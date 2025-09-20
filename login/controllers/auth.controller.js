@@ -15,7 +15,7 @@ let authController = {
 
             let checkUser = await authModel.getUser(reqBody, connection);
             if (checkUser.error) throw new Error(checkUser.error);
-
+            
             if (checkUser.result.length > 0) {
                 const token = jwt.sign(
                     { emp_id: checkUser.result[0].emp_id, emp_name: checkUser.result[0].emp_name },

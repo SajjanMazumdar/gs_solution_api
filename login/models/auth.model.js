@@ -2,7 +2,7 @@
 const userModel = {
     getUser: async (user, connection) => {
         let qry = `
-            SELECT em.emp_id, em.emp_code, em.emp_name, em.line_ids, em.branch_ids, em.emp_status, em.emp_password,
+            SELECT em.emp_id, em.emp_code, em.emp_name, em.emp_status, em.emp_password,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'menu_id', mp.menu_id,

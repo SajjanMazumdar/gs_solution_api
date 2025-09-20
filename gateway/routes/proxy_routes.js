@@ -3,31 +3,38 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const router = express.Router();
 
-function fixRedirect(serviceName) {
-  return (proxyRes) => {
-    const loc = proxyRes.headers['location'];
-    if (loc && loc.includes('localhost')) {
-      // console.log(`⚠️ Rewriting redirect from ${loc}`);
-      proxyRes.headers['location'] = loc.replace(/http:\/\/localhost:\d+/, `/api/${serviceName}`);
-    }
-  };
-}
+router.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: "🚀 API Gateway is running",
+  });
+});
+
 // Login Service Proxy
 router.use('/login', createProxyMiddleware({
   target: process.env.LOGIN_SERVICE,
   changeOrigin: true,
-  pathRewrite: { '^/login': '' },
-  followRedirects: true,
-  onProxyRes: fixRedirect('login'),
+  pathRewrite: {
+    '^/login': '',
+  },
 }));
 
 // Master Service Proxy
 router.use('/master', createProxyMiddleware({
   target: process.env.MASTER_SERVICE,
   changeOrigin: true,
-  pathRewrite: { '^/master': '' },
-  followRedirects: true,
-  onProxyRes: fixRedirect('master'),
+  pathRewrite: {
+    '^/master': '',
+  },
+}));
+
+// Dispatch Service Proxy
+router.use('/dispatch', createProxyMiddleware({
+  target: process.env.DISPATCH_SERVICE,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/dispatch': '',
+  },
 }));
 
 module.exports = router;

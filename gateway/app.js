@@ -67,7 +67,7 @@ process.on('uncaughtException', (err) => {
   logger.error('uncaughtException: Something went wrong');
   process.exit(); // Exit the process with failure
 });
-app.set('trust proxy', true);
+
 // app.listen(() => {
 //   console.log(`Server running at http://localhost:${process.env.PORT}`);
 // });
