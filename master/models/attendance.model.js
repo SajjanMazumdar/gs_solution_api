@@ -22,6 +22,26 @@ const attendanceModel = {
     },
     getAttendanceById: async (attendance_id, connection) => {
         let qry = `
+            SELECT SELECT att.attendance_id, att.line_id, lm.line_name, att.year_id, ym.year_val, ym.leap_year, att.month_id, mm.month_val, mm.month_days, att.total_duty, att.attendance_status
+            FROM t_t_attendance AS att
+            LEFT JOIN line_master AS lm ON att.line_id = lm.line_id 
+            LEFT JOIN year_master AS ym ON att.year_id = ym.year_id
+            LEFT JOIN month_master AS mm ON att.month_id = mm.month_id
+            WHERE att_d.attendance_id = ?
+            AND att.d_status = 0
+        `;
+        let val = [attendance_id];
+        let query = connection.format(qry, val);
+        return connection.query(query)
+            .then(([result]) => {
+                return { error: null, result };
+            })
+            .catch((err) => {
+                return { error: err };
+            });
+    },    
+    getAttendanceDetailsById: async (attendance_id, connection) => {
+        let qry = `
             SELECT att_d.attendance_details_id, att_d.attendance_id, att.line_id, lm.line_name, att.year_id, ym.year_val, ym.leap_year, att.month_id, mm.month_val, mm.month_days, att.total_duty,
                 att_d.guard_id, gm.guard_name, gm.guard_code, att_d.rank_id, rm.rank_name,
                 att_d.day_1, att_d.day_2, att_d.day_3, att_d.day_4, att_d.day_5, att_d.day_6, att_d.day_7, att_d.day_8, att_d.day_9, att_d.day_10, 

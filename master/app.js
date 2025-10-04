@@ -55,6 +55,7 @@ const branchRouter = require('./routes/branch.route');
 const lineRouter = require('./routes/line.route');
 const rankRouter = require('./routes/rank.route');
 const guardRouter = require('./routes/guard.route');
+const attendanceRouter = require('./routes/attendance.route');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -65,6 +66,7 @@ app.use('/branch', branchRouter);
 app.use('/line', lineRouter);
 app.use('/rank', rankRouter);
 app.use('/guard', guardRouter);
+app.use('/attendance', attendanceRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
