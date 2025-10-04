@@ -47,12 +47,20 @@ let attendanceController = {
 
             let res1 = await attendanceModel.createAttendance(reqBody, connection);
             if (res1.error) throw new Error(res1.error);
+            const attendance_id = res1.result.insertId;
+            const emp_id = reqBody.emp_id;
 
-            let res2 = await attendanceModel.getAttendanceById(res1.result.insertId, connection);
-            if (res2.error) throw new Error(res2.error);
+            let attendance_list = reqBody.attendance_list;
+            for (const attendance of attendance_list) {
+                let res2 = await attendanceModel.createAttendanceDetails(attendance, attendance_id, emp_id, connection);
+                if (res2.error) throw new Error(res2.error);
+            }
+
+            let res3 = await attendanceModel.getAttendanceById(attendance_id, connection);
+            if (res3.error) throw new Error(res3.error);
 
             await connection.commit();
-            return cb(null, res2.result);
+            return cb(null, res3.result);
 
         } catch (error) {
             logger.error("Error in createAttendance: ", error);
@@ -84,12 +92,20 @@ let attendanceController = {
 
             let res1 = await attendanceModel.updateAttendance(reqBody, connection);
             if (res1.error) throw new Error(res1.error);
+            const attendance_id = reqBody.attendance_id;
+            const emp_id = reqBody.emp_id;
 
-            let res2 = await attendanceModel.getAttendanceById(reqBody.attendance_id, connection);
-            if (res2.error) throw new Error(res2.error);
+            let attendance_list = reqBody.attendance_list;
+            for (const attendance of attendance_list) {
+                let res2 = await attendanceModel.updateAttendanceDetails(attendance, attendance_id, emp_id, connection);
+                if (res2.error) throw new Error(res2.error);
+            }
+
+            let res3 = await attendanceModel.getAttendanceById(attendance_id, connection);
+            if (res3.error) throw new Error(res3.error);
 
             await connection.commit();
-            return cb(null, res2.result);
+            return cb(null, res3.result);
 
         } catch (error) {
             logger.error("Error in updateAttendance: ", error);
